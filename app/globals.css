@@ -1,0 +1,48 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  font-family: var(--font-montserrat), var(--font-open-sans), 'Roboto', 'Helvetica', 'Arial', sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--theme-background-gradient);
+  min-height: 100dvh;
+}
+
+body:not(.MuiCssBaseline-root) {
+  visibility: hidden;
+}
+
+body.MuiCssBaseline-root {
+  visibility: visible;
+}
+
+.MuiContainer-root {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

@@ -1,0 +1,3 @@
+{
+  "ignore": ".*route\\.ts:.* - (GET|POST|PUT|DELETE|PATCH|OPTIONS|HEAD)$|.*layout\\.tsx:.* - default$|.*page\\.tsx:.* - default$|.*not-found\\.tsx:.* - default$|.*middleware\\.ts:.* - (middleware|config)$|playwright.config.ts:.* - default"
+}

@@ -1,0 +1,94 @@
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Box, Typography } from '@mui/material';
+import { useAuth } from '../../../components/AuthContext';
+import { ROUTES_CONFIG } from '@/app/config/routes';
+import Logo from '../../../components/Logo';
+import AlertNotification from '../../../components/AlertNotification';
+import TranslucentCard from './TranslucentCard';
+import InputText from '../../../components/InputText';
+import InputPasswordText from '../../../components/InputPasswordText';
+import Button from '../../../components/Button';
+
+const LoginForm: React.FC = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const { login } = useAuth();
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
+    e.preventDefault();
+    setError('');
+    setIsLoading(true);
+
+    const success = await login(username, password);
+
+    if (success) {
+      router.push(ROUTES_CONFIG.privateRoutes.home.path);
+    } else {
+      setError('Usuario o contraseña incorrectos');
+    }
+
+    setIsLoading(false);
+  };
+
+  return (
+    <TranslucentCard>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
+        <Logo size="large" />
+      </Box>
+
+      <Typography
+        variant="body1"
+        color="text.secondary"
+        align="center"
+        marginBottom={2}
+      >
+        ¡Solicita tu crédito digital ahora!
+      </Typography>
+
+      <form onSubmit={handleSubmit}>
+        <InputText
+          label="Usuario"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+          disabled={isLoading}
+          onErrorClear={() => setError('')}
+          onInvalidText={'Por favor ingresa tu usuario'}
+          inputProps={{ 'data-testid': 'login-username-input' }}
+        />
+
+        <InputPasswordText
+          label="Contraseña"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          disabled={isLoading}
+          showPassword={showPassword}
+          onTogglePassword={() => setShowPassword(!showPassword)}
+          onErrorClear={() => setError('')}
+          onInvalidText={'Por favor ingresa tu contraseña'}
+          inputProps={{ 'data-testid': 'login-password-input' }}
+        />
+
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+          <Button type="submit" disabled={isLoading} data-testid="login-button">
+            Solicitar mi crédito
+          </Button>
+        </Box>
+      </form>
+
+      <AlertNotification
+        message={error}
+        severity="error"
+        onClose={() => setError('')}
+      />
+    </TranslucentCard>
+  );
+};
+
+export default LoginForm;
