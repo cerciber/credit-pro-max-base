@@ -20,8 +20,12 @@ const userWithPasswordSchema = userSchema.extend({
 
 export type UserWithPassword = z.infer<typeof userWithPasswordSchema>;
 
-export const userPayloadSchema = userSchema.extend({
-  iat: z.number(),
-  exp: z.number(),
-});
+export const userPayloadSchema = z
+  .object({
+    username: z.string(),
+    role: z.string(),
+    iat: z.number(),
+    exp: z.number(),
+  })
+  .strict();
 export type UserPayload = z.infer<typeof userPayloadSchema>;

@@ -1,20 +1,38 @@
-import { UserWithPassword } from '../../users/schemas/user-schema';
-import { AppError } from '../../../config/app-error';
-import { getCollection } from '../../../lib/mongodb';
+import { mulesoftApi } from '../../../lib/mulesoft-api';
+import { AppError } from '@/src/config/app-error';
+import {
+  customerAlreadyExistsSchema,
+  customerQuerySchema,
+  CustomerAlreadyExistsResponse,
+  CustomerQuery,
+} from '../schemas/user-management-v1-customer-schema';
 
 export class AuthenticatorRepository {
-  public async findUserByUsername(username: string): Promise<UserWithPassword> {
-    const collection = await getCollection('users');
-    const user = await collection.findOne({ username });
-    if (!user) throw new AppError<undefined>('User not found', undefined, 404);
-    return {
-      id: user._id.toString(),
-      username: user.username,
-      email: user.email,
-      password: user.password,
-      role: user.role,
-      name: user.name,
-      genre: user.genre,
-    };
+  public async findUserByIdentSerialNum(
+    identSerialNum: string
+  ): Promise<CustomerAlreadyExistsResponse> {
+    const result = await mulesoftApi.get<
+      CustomerQuery,
+      CustomerAlreadyExistsResponse
+    >('/api/userManagement/v1/Customer', {
+      input: {
+        govIssueIdentType: 'CC',
+        identSerialNum,
+        value: 'CREAR',
+      },
+      inputSchema: customerQuerySchema,
+      outputSchema: customerAlreadyExistsSchema,
+      expectedSuccessStatus: 400,
+    });
+
+    if (result.ok) {
+      return result.data;
+    }
+
+    throw new AppError(
+      'Mulesoft customer request failed',
+      result.error,
+      401
+    );
   }
 }

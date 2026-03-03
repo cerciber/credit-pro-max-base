@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { userSchema } from '../../users/schemas/user-schema';
+import { customerAlreadyExistsSchema } from './user-management-v1-customer-schema';
 
 const authOutputSchema = z.object({
   token: z.string(),
-  user: userSchema,
+  user: customerAlreadyExistsSchema,
 });
 
 export const authOutputResponseSchema = z.object({

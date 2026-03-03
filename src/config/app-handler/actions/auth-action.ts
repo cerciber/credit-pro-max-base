@@ -97,12 +97,8 @@ export class AuthAction {
     }
 
     return {
-      id: 'cron',
-      email: 'cron@system',
-      role: 'cron',
-      name: 'Cron System',
       username: 'cron',
-      genre: 'M',
+      role: 'cron',
       iat: 0,
       exp: 0,
     };
@@ -154,7 +150,7 @@ export class AuthAction {
   ): void {
     if (!allowedRoles || allowedRoles.length === 0) return;
 
-    if (!allowedRoles.includes(user.role)) {
+    if (!user.role || !allowedRoles.includes(user.role)) {
       throw this.getAuthActionError(
         'User does not have the required role to access this endpoint',
         AuthState.FORBIDDEN,

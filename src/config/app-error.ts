@@ -5,6 +5,6 @@ export class AppError<T> extends Error {
   constructor(message: string, data: T, status?: number) {
     super(message);
     this.data = data;
-    this.status = status || 500;
+    this.status = status ?? 500;
   }
 }

@@ -15,7 +15,7 @@ export class AuthService {
     credentials: UserCredentials
   ): Promise<AuthOutputResponse> {
     const user = await this.authenticatorService.authenticateUser(credentials);
-    const token = this.authenticatorService.generateToken(user);
+    const token = this.authenticatorService.generateToken(credentials.username);
     return { status: 200, message: 'Success login', data: { token, user } };
   }
 

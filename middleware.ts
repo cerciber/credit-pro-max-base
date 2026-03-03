@@ -10,7 +10,6 @@ import { STATICS_CONFIG } from './app/config/statics';
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 import { jwtVerify } from 'jose';
 import {
-  User,
   UserPayload,
   userPayloadSchema,
 } from './src/modules/users/schemas/user-schema';
@@ -31,7 +30,7 @@ function getPathname(request: NextRequest): string {
 
 async function getUserFromToken(
   token: RequestCookie | undefined
-): Promise<User | null> {
+): Promise<UserPayload | null> {
   if (!token) return null;
 
   const jwtSecret = validate<JwtSecret>(
@@ -53,14 +52,7 @@ async function getUserFromToken(
     userPayloadSchema,
     'Invalid token user payload'
   );
-  return {
-    name: userPayload.name,
-    id: userPayload.id,
-    username: userPayload.username,
-    email: userPayload.email,
-    role: userPayload.role,
-    genre: userPayload.genre,
-  };
+  return userPayload;
 }
 
 async function isForbidden(
@@ -92,7 +84,7 @@ async function isForbidden(
     return true;
   }
 
-  return !isAuthorizedRoute(pathname, user.role);
+  return !isAuthorizedRoute(pathname, user.role ?? '');
 }
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
