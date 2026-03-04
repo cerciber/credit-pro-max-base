@@ -76,6 +76,11 @@ export default function Button({
         '& .MuiButton-startIcon': {
           color: THEME_CONFIG.palette.line.main,
         },
+        '&.Mui-disabled': {
+          backgroundColor: THEME_CONFIG.palette[colorStyle].light,
+          color: THEME_CONFIG.palette.text.secondary,
+          opacity: 0.75,
+        },
         ...sx,
       }}
     >

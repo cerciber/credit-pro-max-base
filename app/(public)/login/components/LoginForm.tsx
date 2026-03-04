@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Box, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import { useAuth } from '../../../components/AuthContext';
 import { ROUTES_CONFIG } from '@/app/config/routes';
 import Logo from '../../../components/Logo';
@@ -30,9 +30,8 @@ const LoginForm: React.FC = () => {
       router.push(ROUTES_CONFIG.privateRoutes.home.path);
     } else {
       setError('Usuario o contraseña incorrectos');
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   return (
@@ -58,8 +57,13 @@ const LoginForm: React.FC = () => {
           required
           disabled={isLoading}
           onErrorClear={() => setError('')}
-          onInvalidText={'Por favor ingresa tu usuario'}
-          inputProps={{ 'data-testid': 'login-username-input' }}
+          onInvalidText={
+            'Ingresa un usuario valido (tipo+numero ej: CC1234)'
+          }
+          inputProps={{
+            'data-testid': 'login-username-input',
+            pattern: '[A-Za-z]{2,10}[0-9]+',
+          }}
         />
 
         <InputPasswordText
@@ -77,7 +81,14 @@ const LoginForm: React.FC = () => {
 
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
           <Button type="submit" disabled={isLoading} data-testid="login-button">
-            Solicitar mi crédito
+            {isLoading ? (
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <CircularProgress size={20} color="inherit" />
+                Ingresando...
+              </Box>
+            ) : (
+              'Ingresar'
+            )}
           </Button>
         </Box>
       </form>

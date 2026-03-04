@@ -16,7 +16,7 @@ const WelcomeCard: React.FC = () => {
         </Avatar>
         <Box sx={{ textAlign: 'left' }}>
           <Typography variant="h5">
-            ¡Bienvenid{user?.genre === 'F' ? 'a' : 'o'}, {user?.name}!
+            ¡Bienvenido!
           </Typography>
           <Typography variant="body2">{user?.email}</Typography>
         </Box>

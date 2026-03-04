@@ -10,6 +10,7 @@ interface InputTextProps extends Omit<TextFieldProps, 'sx'> {
 const InputText: React.FC<InputTextProps> = ({
   onErrorClear,
   onInvalidText,
+  inputProps,
   ...props
 }) => {
   const defaultSx = {
@@ -43,21 +44,29 @@ const InputText: React.FC<InputTextProps> = ({
     },
   };
 
+  const mergedInputProps = {
+    ...(inputProps || {}),
+    onInvalid: (e: React.FormEvent<HTMLInputElement>): void => {
+      e.currentTarget.setCustomValidity(onInvalidText);
+      if (typeof inputProps?.onInvalid === 'function') {
+        inputProps.onInvalid(e);
+      }
+    },
+    onInput: (e: React.FormEvent<HTMLInputElement>): void => {
+      e.currentTarget.setCustomValidity('');
+      onErrorClear?.();
+      if (typeof inputProps?.onInput === 'function') {
+        inputProps.onInput(e);
+      }
+    },
+  };
+
   return (
     <TextField
       fullWidth
       margin="normal"
       autoComplete="off"
-      inputProps={{
-        onInvalid: (e: React.FormEvent<HTMLInputElement>): void => {
-          e.currentTarget.setCustomValidity(onInvalidText);
-        },
-        onInput: (e: React.FormEvent<HTMLInputElement>): void => {
-          e.currentTarget.setCustomValidity('');
-          onErrorClear?.();
-        },
-        ...(props.inputProps || {}),
-      }}
+      inputProps={mergedInputProps}
       sx={defaultSx}
       {...props}
     />

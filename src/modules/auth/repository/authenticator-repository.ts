@@ -11,13 +11,14 @@ export class AuthenticatorRepository {
   public async findUserByIdentSerialNum(
     identSerialNum: string
   ): Promise<CustomerAlreadyExistsResponse> {
+    const identSerialNumWithoutType = identSerialNum.slice(2);
     const result = await mulesoftApi.get<
       CustomerQuery,
       CustomerAlreadyExistsResponse
     >('/api/userManagement/v1/Customer', {
       input: {
         govIssueIdentType: 'CC',
-        identSerialNum,
+        identSerialNum: identSerialNumWithoutType,
         value: 'CREAR',
       },
       inputSchema: customerQuerySchema,
