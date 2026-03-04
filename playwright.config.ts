@@ -4,10 +4,11 @@ import './tests/global-test';
 
 dotenv.config({ path: '.env', quiet: true });
 
-const url = 'http://localhost:3000';
+const port = process.env.PORT;
+const url = process.env.BASE_URL || `http://localhost:${port}`;
 
 const webServer = {
-  command: 'npm run dev:test',
+  command: `PORT=${port} npm run dev:test`,
   url,
 };
 
