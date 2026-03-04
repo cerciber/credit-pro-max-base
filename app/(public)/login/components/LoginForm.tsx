@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { useAuth } from '../../../components/AuthContext';
-import { ROUTES_CONFIG } from '@/app/config/routes';
+import { DEFAULT_ROUTES } from '@/app/config/routes';
 import Logo from '../../../components/Logo';
 import AlertNotification from '../../../components/AlertNotification';
 import TranslucentCard from './TranslucentCard';
@@ -41,7 +41,7 @@ const LoginForm: React.FC = () => {
 
   useEffect(() => {
     if (!isAuthLoading && user) {
-      router.push(ROUTES_CONFIG.privateRoutes.home.path);
+      router.push(DEFAULT_ROUTES.privateRoute.path);
     }
   }, [isAuthLoading, user, router]);
 
@@ -77,7 +77,7 @@ const LoginForm: React.FC = () => {
     const success = await login(username, password);
 
     if (success) {
-      router.push(ROUTES_CONFIG.privateRoutes.home.path);
+      router.push(DEFAULT_ROUTES.privateRoute.path);
     } else {
       setError('Usuario o contraseña incorrectos');
       setIsLoading(false);

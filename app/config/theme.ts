@@ -49,48 +49,51 @@ export const THEME_CONFIG = {
     gradient: `radial-gradient(ellipse at 0% 30%, ${primaryColors.main} 0%, #000000 60%, ${primaryColors.main} 100%)`,
   },
   typography: {
+    fontSize: 13,
     fontFamily: `${fontConfig.primary}, ${fontConfig.fallback}`,
     h1: {
       fontFamily: fontConfig.primary,
       fontWeight: 600,
-      fontSize: '2.5rem',
+      fontSize: '1.9rem',
     },
     h2: {
       fontFamily: fontConfig.primary,
       fontWeight: 600,
-      fontSize: '2rem',
+      fontSize: '1.65rem',
     },
     h3: {
       fontFamily: fontConfig.primary,
       fontWeight: 600,
-      fontSize: '1.75rem',
+      fontSize: '1.4rem',
     },
     h4: {
       fontFamily: fontConfig.primary,
       fontWeight: 600,
-      fontSize: '1.5rem',
+      fontSize: '1.2rem',
     },
     h5: {
       fontFamily: fontConfig.primary,
       fontWeight: 600,
-      fontSize: '1.25rem',
+      fontSize: '1.05rem',
     },
     h6: {
       fontFamily: fontConfig.primary,
       fontWeight: 600,
-      fontSize: '1.125rem',
+      fontSize: '0.95rem',
     },
     body1: {
       fontFamily: fontConfig.primary,
+      fontSize: '0.875rem',
     },
     body2: {
       fontFamily: fontConfig.primary,
+      fontSize: '0.8rem',
     },
     button: {
       fontFamily: fontConfig.secondary,
       fontWeight: 500,
       textTransform: 'none',
-      fontSize: '18px',
+      fontSize: '14px',
       borderRadius: '25px',
     },
   },
