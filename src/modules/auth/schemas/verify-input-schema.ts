@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { userPayloadSchema } from '../../users/schemas/user-schema';
+import { userPayloadSchema } from './user-schema';
 
 const verifyInputBodySchema = z.object({});
 export type VerifyInputBody = Record<string, never>;

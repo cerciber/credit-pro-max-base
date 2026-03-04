@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { userPayloadSchema } from '../../users/schemas/user-schema';
+import { userPayloadSchema } from './user-schema';
 
 export const verifyOutputResponseSchema = z.object({
   status: z.number(),

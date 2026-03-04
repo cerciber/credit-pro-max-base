@@ -13,12 +13,12 @@ import { STATICS_CONFIG } from '../config/statics';
 import { VerifyOutputResponse } from '@/src/modules/auth/schemas/verify-output-schema';
 import { AuthOutputResponse } from '@/src/modules/auth/schemas/auth-output-schema';
 import { UserCredentials } from '@/src/modules/auth/schemas/user-credentials-schema';
-import { User } from '@/src/modules/users/schemas/user-schema';
+import { UserPayload } from '@/src/modules/auth/schemas/user-schema';
 import { AppError } from '@/src/config/app-error';
 import { VerifyInputBody } from '@/src/modules/auth/schemas/verify-input-schema';
 
 interface AuthContextType {
-  user: User | null;
+  user: UserPayload | null;
   token: string | null;
   login: (username: string, password: string) => Promise<boolean>;
   logout: () => void;
@@ -43,7 +43,7 @@ export const useAuth = (): AuthContextType => {
 };
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserPayload | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -55,7 +55,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     return token;
   };
 
-  const setTokenAndUser = (token: string, user: User): void => {
+  const setTokenAndUser = (token: string, user: UserPayload): void => {
     setUser(user);
     setToken(token);
     Cookies.set(STATICS_CONFIG.cookies.authToken, token, {
@@ -80,10 +80,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const url = new URL(window.location.href);
     if (!url.searchParams.has('token')) return;
     url.searchParams.delete('token');
-    window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
+    window.history.replaceState(
+      {},
+      '',
+      `${url.pathname}${url.search}${url.hash}`
+    );
   };
 
-  const apiAuthVerify = async (token?: string): Promise<VerifyOutputResponse> => {
+  const apiAuthVerify = async (
+    token?: string
+  ): Promise<VerifyOutputResponse> => {
     return await api.post<VerifyInputBody, VerifyOutputResponse>(
       API_ROUTES.auth.verify,
       {},
@@ -102,7 +108,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const tokenFromUrlParam = getTokenFromUrlParam();
       const tokenToVerify = tokenFromUrlParam ?? getTokenToVerify();
       const result = await apiAuthVerify(tokenToVerify);
-      setTokenAndUser(tokenToVerify, result.data.user as unknown as User);
+      setTokenAndUser(tokenToVerify, result.data.user);
       if (tokenFromUrlParam) {
         removeTokenParamFromUrl();
       }
@@ -128,7 +134,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   ): Promise<boolean> => {
     try {
       const result = await apiAuthLogin(username, password);
-      setTokenAndUser(result.data.token, result.data.user);
+      const verifyResult = await apiAuthVerify(result.data.token);
+      setTokenAndUser(result.data.token, verifyResult.data.user);
       return true;
     } catch {
       return false;

@@ -8,8 +8,10 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { THEME_CONFIG } from '../config/theme';
 
-interface InputPasswordTextProps
-  extends Omit<TextFieldProps, 'sx' | 'InputProps'> {
+interface InputPasswordTextProps extends Omit<
+  TextFieldProps,
+  'sx' | 'InputProps'
+> {
   onErrorClear?: () => void;
   onInvalidText: string;
   showPassword: boolean;

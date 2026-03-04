@@ -2,7 +2,7 @@ import { AuthOutputResponse } from '../schemas/auth-output-schema';
 import { AuthenticatorService } from './authenticator-service';
 import { UserCredentials } from '../schemas/user-credentials-schema';
 import { VerifyOutputResponse } from '../schemas/verify-output-schema';
-import { UserPayload } from '../../users/schemas/user-schema';
+import { UserPayload } from '../schemas/user-schema';
 
 export class AuthService {
   private authenticatorService: AuthenticatorService;

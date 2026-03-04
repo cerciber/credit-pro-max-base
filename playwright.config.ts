@@ -2,7 +2,7 @@ import { defineConfig } from '@playwright/test';
 import dotenv from 'dotenv';
 import './tests/global-test';
 
-dotenv.config({ path: '.env.test', quiet: true });
+dotenv.config({ path: '.env', quiet: true });
 
 const url = 'http://localhost:3000';
 

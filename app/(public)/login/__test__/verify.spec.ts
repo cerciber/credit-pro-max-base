@@ -1,23 +1,14 @@
 import { test, expect, Page } from '@playwright/test';
-import { UsersRepository } from '../../../../src/modules/users/repository/users-repository';
 import {
   verifyOutputResponseSchema,
   VerifyOutputResponse,
 } from '../../../../src/modules/auth/schemas/verify-output-schema';
 import { validate } from '../../../../src/lib/validate';
 import { STATICS_CONFIG } from '@/app/config/statics';
-import {
-  generateTestUser,
-  deleteUser,
-} from '../../../../tests/helpers/user-helpers';
 import { doLogin } from '../../../../tests/helpers/login-helpers';
-import { CreateUser } from '../../../../src/modules/users/schemas/create-user-schema';
 import { DEFAULT_ROUTES } from '@/app/config/routes';
 
 test.describe('Verify', () => {
-  let usersRepository: UsersRepository;
-  let testUser: CreateUser;
-
   const waitForVerifyRequest = async (page: Page): Promise<void> => {
     const response = await page.waitForResponse(
       (response) =>
@@ -58,22 +49,8 @@ test.describe('Verify', () => {
     await page.goto(url);
   };
 
-  test.beforeAll(async () => {
-    usersRepository = new UsersRepository();
-  });
-
-  test.beforeEach(async () => {
-    testUser = generateTestUser('client');
-    await deleteUser(usersRepository, testUser);
-    await usersRepository.createUser(testUser);
-  });
-
-  test.afterEach(async () => {
-    await deleteUser(usersRepository, testUser);
-  });
-
   doTest('Successfully', async ({ page }) => {
-    await doLogin(page, testUser.username, testUser.password);
+    await doLogin(page, 'CC1000300001', '12345678');
     await reload(page, DEFAULT_ROUTES.privateRoute.path);
     await waitForVerifyRequest(page);
     await page.waitForURL(DEFAULT_ROUTES.privateRoute.path);

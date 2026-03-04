@@ -1,5 +1,5 @@
 import { ResponseData } from '../response';
-import { UserPayload } from '../../modules/users/schemas/user-schema';
+import { UserPayload } from '../../modules/auth/schemas/user-schema';
 import { AuthAction } from './actions/auth-action';
 import { InputAction } from './actions/input-action';
 import { OutputAction } from './actions/output-action';

@@ -1,6 +1,6 @@
 import { CustomNextRequest } from '../app-handler';
 import jwt from 'jsonwebtoken';
-import { UserPayload } from '../../../modules/users/schemas/user-schema';
+import { UserPayload } from '../../../modules/auth/schemas/user-schema';
 import { AppError } from '../../app-error';
 import { ENDPOINTS_CONFIG, EndpointConfig } from '../../statics/endpoints';
 import { validate } from '../../../lib/validate';

@@ -107,9 +107,7 @@ const LoginForm: React.FC = () => {
           required
           disabled={isLoading}
           onErrorClear={() => setError('')}
-          onInvalidText={
-            'Ingresa un usuario valido (tipo+numero ej: CC1234)'
-          }
+          onInvalidText={'Ingresa un usuario valido (tipo+numero ej: CC1234)'}
           inputProps={{
             'data-testid': 'login-username-input',
             pattern: '[A-Za-z]{2,10}[0-9]+',

@@ -27,7 +27,9 @@ export class AuthenticatorService {
     });
   }
 
-  public async authenticateUser(credentials: UserCredentials): Promise<CustomerAlreadyExistsResponse> {
+  public async authenticateUser(
+    credentials: UserCredentials
+  ): Promise<CustomerAlreadyExistsResponse> {
     if (credentials.password !== '12345678') {
       throw new AppError('Invalid password', undefined, 401);
     }

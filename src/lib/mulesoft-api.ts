@@ -241,7 +241,10 @@ const request = async <Input, Output>(
 
 const get = async <Input, Output>(
   url: string,
-  options: Omit<MulesoftRequestOptions<Input, Output>, 'method' | 'url' | 'sendAs'>
+  options: Omit<
+    MulesoftRequestOptions<Input, Output>,
+    'method' | 'url' | 'sendAs'
+  >
 ): Promise<MulesoftResult<Output>> => {
   return request<Input, Output>({
     ...options,
@@ -253,7 +256,10 @@ const get = async <Input, Output>(
 
 const post = async <Input, Output>(
   url: string,
-  options: Omit<MulesoftRequestOptions<Input, Output>, 'method' | 'url' | 'sendAs'>
+  options: Omit<
+    MulesoftRequestOptions<Input, Output>,
+    'method' | 'url' | 'sendAs'
+  >
 ): Promise<MulesoftResult<Output>> => {
   return request<Input, Output>({
     ...options,
@@ -265,7 +271,10 @@ const post = async <Input, Output>(
 
 const put = async <Input, Output>(
   url: string,
-  options: Omit<MulesoftRequestOptions<Input, Output>, 'method' | 'url' | 'sendAs'>
+  options: Omit<
+    MulesoftRequestOptions<Input, Output>,
+    'method' | 'url' | 'sendAs'
+  >
 ): Promise<MulesoftResult<Output>> => {
   return request<Input, Output>({
     ...options,
@@ -277,7 +286,10 @@ const put = async <Input, Output>(
 
 const del = async <Input, Output>(
   url: string,
-  options: Omit<MulesoftRequestOptions<Input, Output>, 'method' | 'url' | 'sendAs'>
+  options: Omit<
+    MulesoftRequestOptions<Input, Output>,
+    'method' | 'url' | 'sendAs'
+  >
 ): Promise<MulesoftResult<Output>> => {
   return request<Input, Output>({
     ...options,
@@ -294,4 +306,3 @@ export const mulesoftApi = {
   put,
   delete: del,
 };
-

@@ -21,4 +21,3 @@ export type CustomerQuery = z.infer<typeof customerQuerySchema>;
 export type CustomerAlreadyExistsResponse = z.infer<
   typeof customerAlreadyExistsSchema
 >;
-

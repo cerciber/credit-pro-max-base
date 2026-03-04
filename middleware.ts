@@ -12,7 +12,7 @@ import { jwtVerify } from 'jose';
 import {
   UserPayload,
   userPayloadSchema,
-} from './src/modules/users/schemas/user-schema';
+} from './src/modules/auth/schemas/user-schema';
 import { validate } from './src/lib/validate';
 import {
   JwtSecret,

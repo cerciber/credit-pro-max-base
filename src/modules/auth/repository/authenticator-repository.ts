@@ -30,10 +30,6 @@ export class AuthenticatorRepository {
       return result.data;
     }
 
-    throw new AppError(
-      'Mulesoft customer request failed',
-      result.error,
-      401
-    );
+    throw new AppError('Mulesoft customer request failed', result.error, 401);
   }
 }
