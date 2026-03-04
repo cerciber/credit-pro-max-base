@@ -27,5 +27,5 @@ export const userPayloadSchema = z
     iat: z.number(),
     exp: z.number(),
   })
-  .strict();
+  .passthrough();
 export type UserPayload = z.infer<typeof userPayloadSchema>;

@@ -96,9 +96,12 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
       const user = await getUserFromToken(token);
 
       if (!user) {
-        return NextResponse.redirect(
-          new URL(DEFAULT_ROUTES.publicRoute, request.url)
-        );
+        const loginUrl = new URL(DEFAULT_ROUTES.publicRoute, request.url);
+        const tokenParam = request.nextUrl.searchParams.get('token');
+        if (tokenParam) {
+          loginUrl.searchParams.set('token', tokenParam);
+        }
+        return NextResponse.redirect(loginUrl);
       } else {
         return NextResponse.redirect(
           new URL(DEFAULT_ROUTES.privateRoute.path, request.url)

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { useAuth } from '../../../components/AuthContext';
 import { ROUTES_CONFIG } from '@/app/config/routes';
@@ -16,8 +16,58 @@ const LoginForm: React.FC = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const { login } = useAuth();
+  const [isClientReady, setIsClientReady] = useState(false);
+  const [isTokenBootstrapFlow, setIsTokenBootstrapFlow] = useState(false);
+  const { login, user, isLoading: isAuthLoading } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const hasTokenParam = Boolean(searchParams.get('token'));
+
+  useEffect(() => {
+    setIsClientReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (hasTokenParam) {
+      setIsTokenBootstrapFlow(true);
+    }
+  }, [hasTokenParam]);
+
+  useEffect(() => {
+    if (isTokenBootstrapFlow && !isAuthLoading && !user) {
+      setIsTokenBootstrapFlow(false);
+    }
+  }, [isTokenBootstrapFlow, isAuthLoading, user]);
+
+  useEffect(() => {
+    if (!isAuthLoading && user) {
+      router.push(ROUTES_CONFIG.privateRoutes.home.path);
+    }
+  }, [isAuthLoading, user, router]);
+
+  if (
+    !isClientReady ||
+    ((hasTokenParam || isTokenBootstrapFlow) && (isAuthLoading || !!user))
+  ) {
+    return (
+      <TranslucentCard>
+        <Box
+          sx={{
+            minHeight: 220,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 2,
+            color: 'text.secondary',
+          }}
+        >
+          <CircularProgress color="inherit" />
+          <Typography color="inherit">Validando acceso...</Typography>
+        </Box>
+      </TranslucentCard>
+    );
+  }
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();

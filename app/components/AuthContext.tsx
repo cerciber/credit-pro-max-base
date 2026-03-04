@@ -69,17 +69,43 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setToken(null);
   };
 
-  const apiAuthVerify = async (): Promise<VerifyOutputResponse> => {
+  const getTokenFromUrlParam = (): string | null => {
+    if (typeof window === 'undefined') return null;
+    const url = new URL(window.location.href);
+    return url.searchParams.get('token');
+  };
+
+  const removeTokenParamFromUrl = (): void => {
+    if (typeof window === 'undefined') return;
+    const url = new URL(window.location.href);
+    if (!url.searchParams.has('token')) return;
+    url.searchParams.delete('token');
+    window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
+  };
+
+  const apiAuthVerify = async (token?: string): Promise<VerifyOutputResponse> => {
     return await api.post<VerifyInputBody, VerifyOutputResponse>(
-      API_ROUTES.auth.verify
+      API_ROUTES.auth.verify,
+      {},
+      token
+        ? {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        : undefined
     );
   };
 
   const verifyToken = useCallback(async (): Promise<void> => {
     try {
-      const tokenToVerify = getTokenToVerify();
-      const result = await apiAuthVerify();
-      setTokenAndUser(tokenToVerify, result.data.user);
+      const tokenFromUrlParam = getTokenFromUrlParam();
+      const tokenToVerify = tokenFromUrlParam ?? getTokenToVerify();
+      const result = await apiAuthVerify(tokenToVerify);
+      setTokenAndUser(tokenToVerify, result.data.user as unknown as User);
+      if (tokenFromUrlParam) {
+        removeTokenParamFromUrl();
+      }
     } catch {
       removeTokenAndUser();
     }
